@@ -1,0 +1,4 @@
+blog.imomo.tw
+=============
+
+Octopress
