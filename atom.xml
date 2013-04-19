@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Jim's Blog]]></title>
-  <link href="http://leafmouse.github.io/blog/atom.xml" rel="self"/>
-  <link href="http://leafmouse.github.io/blog/"/>
-  <updated>2013-04-19T23:36:23+08:00</updated>
-  <id>http://leafmouse.github.io/blog/</id>
+  <link href="http://blog.imomo.tw/atom.xml" rel="self"/>
+  <link href="http://blog.imomo.tw/"/>
+  <updated>2013-04-20T05:42:34+08:00</updated>
+  <id>http://blog.imomo.tw/</id>
   <author>
     <name><![CDATA[Jim Chen]]></name>
     
@@ -15,41 +15,39 @@
   
   <entry>
     <title type="html"><![CDATA[Apache Reverse Proxy 實作筆記]]></title>
-    <link href="http://leafmouse.github.io/blog/blog/2013/04/19/hello-world/"/>
+    <link href="http://blog.imomo.tw/blog/2013/04/19/hello-world/"/>
     <updated>2013-04-19T07:03:00+08:00</updated>
-    <id>http://leafmouse.github.io/blog/blog/2013/04/19/hello-world</id>
-    <content type="html"><![CDATA[<h2>以下是使用 Apache 實作 Reverse Proxy</h2>
+    <id>http://blog.imomo.tw/blog/2013/04/19/hello-world</id>
+    <content type="html"><![CDATA[<p><strong>1. 編輯Apache設定檔</strong></p>
 
-<ol>
-<li><p>編輯Apache設定檔</p>
+<pre><code>vi /etc/httpd/conf/httpd.conf
+</code></pre>
 
-<pre><code> vi /etc/httpd/conf/httpd.conf
-</code></pre></li>
-<li><p>檢查Apache是否安裝mod_proxy模組</p>
+<p><strong>2. 檢查Apache是否安裝mod_proxy模組</strong></p>
 
-<p> 搜尋設定檔中是否有下列二行</p>
+<p>搜尋設定檔中是否有下列二行設定</p>
 
-<pre><code> LoadModule proxy_module modules/mod_proxy.so
- LoadModule proxy_http_module modules/mod_proxy_http.so
-</code></pre></li>
-<li><p>拿掉開啟proxy功能</p>
+<pre><code>LoadModule proxy_module modules/mod_proxy.so
+LoadModule proxy_http_module modules/mod_proxy_http.so
+</code></pre>
 
-<pre><code> ProxyRequests Off 
+<p><strong>3. 拿掉開啟proxy功能</strong></p>
 
- &lt;Proxy *&gt; 
- Order deny,allow 
- Deny from all 
- Allow from all 
- &lt;/Proxy&gt; 
-</code></pre></li>
-<li><p>ProxyPassReverse設定</p>
+<pre><code>ProxyRequests Off 
 
-<pre><code> ProxyVia On 
- ProxyPass /redir http://another_ip_address/redir 
- ProxyPassReverse /redir http://another_ip_address/redir
-</code></pre></li>
-</ol>
+&lt;Proxy *&gt; 
+Order deny,allow 
+Deny from all 
+Allow from all 
+&lt;/Proxy&gt; 
+</code></pre>
 
+<p><strong>4. ProxyPassReverse設定</strong></p>
+
+<pre><code>ProxyVia On 
+ProxyPass /redir http://another_ip_address/redir 
+ProxyPassReverse /redir http://another_ip_address/redir
+</code></pre>
 
 <p>Reference: <a href="http://www.wretch.cc/blog/siaocheng/2878629">http://www.wretch.cc/blog/siaocheng/2878629</a></p>
 ]]></content>
@@ -57,33 +55,185 @@
   
   <entry>
     <title type="html"><![CDATA[發表Octopress文章的流程]]></title>
-    <link href="http://leafmouse.github.io/blog/blog/2013/04/18/fa-biao-octopresswen-zhang-de-liu-cheng/"/>
+    <link href="http://blog.imomo.tw/blog/2013/04/18/fa-biao-octopresswen-zhang-de-liu-cheng/"/>
     <updated>2013-04-18T17:43:00+08:00</updated>
-    <id>http://leafmouse.github.io/blog/blog/2013/04/18/fa-biao-octopresswen-zhang-de-liu-cheng</id>
-    <content type="html"><![CDATA[<p>發表blog的流程</p>
+    <id>http://blog.imomo.tw/blog/2013/04/18/fa-biao-octopresswen-zhang-de-liu-cheng</id>
+    <content type="html"><![CDATA[<p><strong>1. 執行下列指令建立新的文章</strong></p>
 
-<ol>
-<li><p>執行下列指令建立新的文章</p>
+<pre><code>rake new_post["新文章標題"]
+</code></pre>
 
-<pre><code> rake new_post["新文章標題"]
-</code></pre></li>
-<li><p>使用 Sublime Text 2 或其他編輯軟體編輯文章</p></li>
-<li><p>執行下列指令以利於本機中先預覽 <a href="http://localhost:4000">http://localhost:4000</a></p>
+<p><strong>2. 使用 Sublime Text 2 或其他編輯軟體編輯文章</strong></p>
 
-<pre><code> rake preview
-</code></pre></li>
-<li><p>編譯文章</p>
+<p><strong>3. 執行下列指令以利於本機中先預覽</strong> http://localhost:4000</p>
 
-<pre><code> rake generate
-</code></pre></li>
-<li><p>將文章上傳到 github.com</p>
+<pre><code>rake preview
+</code></pre>
 
-<pre><code> rake deploy
-</code></pre></li>
-<li><p>同時用git add, git commit,
-和git push origin site 提交site分支的更改</p></li>
-</ol>
+<p><strong>4. 編譯文章</strong></p>
 
+<pre><code>rake generate
+</code></pre>
+
+<p><strong>5. 將文章上傳到 github.com</strong></p>
+
+<pre><code>rake deploy
+</code></pre>
+
+<p><strong>6. 同時用git add, git commit,
+   和git push origin site 提交site分支的更改</strong></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[vsftpd virtual user 實作筆記]]></title>
+    <link href="http://blog.imomo.tw/blog/2013/03/25/vsftpd-virtual-user-shi-zuo-bi-ji/"/>
+    <updated>2013-03-25T17:23:00+08:00</updated>
+    <id>http://blog.imomo.tw/blog/2013/03/25/vsftpd-virtual-user-shi-zuo-bi-ji</id>
+    <content type="html"><![CDATA[<p>工作上為了避免網頁維護人員有意或無意的更動到系統的檔案<br/>
+於是研究一下使用Virtual User而不實際使用系統帳號來登入<br/>
+Web Server</p>
+
+<p>系統套件:
+CentOS release 6.4</p>
+
+<p>必要套件:
+Berkeley DB (version 4) databases
+pam_userdb.so</p>
+
+<p><strong>1. 安裝必要套件</strong></p>
+
+<pre><code>yum install db4-utils db4 vsftpd 
+</code></pre>
+
+<p><strong>2. 建立虛擬帳號</strong></p>
+
+<p>編輯虛擬帳號檔</p>
+
+<pre><code>vi /etc/vsftpd/logins.txt 
+</code></pre>
+
+<p>檔案內容如下:</p>
+
+<p>格式一</p>
+
+<pre><code>user1 userpass1 user2 userpass2 user3 userpass3 
+</code></pre>
+
+<p>格式二 (文件格式: 單數行=帳號名稱,偶數行=密碼)</p>
+
+<pre><code>virtualuser1  
+userpass1  
+virtualuser2  
+userpass2  
+</code></pre>
+
+<p><strong>3. 將logins.txt 轉換成資料庫格式的檔案</strong></p>
+
+<pre><code>db_load -T -t hash -f /etc/vsftpd/logins.txt /etc/vsftpd/vsftpd_login.db 
+chmod 600 vsftpd_login.db 
+rm logins.txt 
+</code></pre>
+
+<p><strong>4. 編輯 vsftpd 設定檔</strong></p>
+
+<pre><code>編輯設定檔
+vi /etc/vsftpd/vsftpd.conf 
+
+新增內容如下:
+
+    pam_service_name=vsftpd.virtual 
+    anonymous_enable=NO 
+    anon_upload_enable=NO 
+    guest_enable=YES 
+    guest_username=ftpuser 
+    virtual_use_local_privs=YES 
+
+以下參數待確認
+
+    chown_uploads=YES 
+    username to own the file and folders uploaded 
+    chown_username=ftpuser 
+    xferlog_std_format=NO 
+    listen=YES 
+</code></pre>
+
+<p><strong>5. 建立 PAM file 以使用我們新建立的資料庫</strong></p>
+
+<pre><code>    vi /etc/pam.d/vsftpd.virtual 
+</code></pre>
+
+<p>新增內容如下:</p>
+
+<pre><code>#%PAM-1.0 
+auth required pam_userdb.so db=/etc/vsftpd/vsftpd_login 
+account required pam_userdb.so db=/etc/vsftpd/vsftpd_login 
+session required pam_loginuid.so 
+</code></pre>
+
+<p><strong>6. 為使 virtual user 擁有自己的家目錄</strong></p>
+
+<p>6-1. 編輯 vsftpd 設定檔</p>
+
+<pre><code>vi /etc/vsftpd/vsftpd.conf 
+</code></pre>
+
+<p>新增內容如下:</p>
+
+<pre><code>user_config_dir=/etc/vsftpd/vsftpd_user_conf
+</code></pre>
+
+<p>6-2. 建立 vsftpd_user_conf 目錄</p>
+
+<pre><code>mkdir /etc/vsftpd/vsftpd_user_conf 
+</code></pre>
+
+<p>6-3. 建立每個 virtual user 個別設定檔</p>
+
+<pre><code>vi /etc/vsftpd/vsftpd_user_conf/virtualuser1 
+</code></pre>
+
+<p>新增內容如下:</p>
+
+<pre><code>write_enable=YES 
+anon_world_readable_only=NO 
+anon_upload_enable=YES anon_mkdir_write_enable=YES
+anon_other_write_enable=YES 
+
+local_root=/home/ftpuser/virtualuser1 
+</code></pre>
+
+<p><strong>7. 建立 ftpuser 帳號</strong></p>
+
+<pre><code>useradd ftpuser -d /home/ftpuser -s /bin/false 
+chown ftpuser:ftpuser /home/ftpuser 
+</code></pre>
+
+<p><strong>8. Create the location of the files. Set up the location of the files / dirs for the virtual users.</strong></p>
+
+<pre><code>mkdir -p /home/ftpuser/{virtualuser1,virtualuser2} 
+chown -R ftpuser:ftpuser /home/ftpuser 
+</code></pre>
+
+<p><strong>9. 重新啟動 vsftpd</strong></p>
+
+<pre><code>/etc/init.d/vsftpd restart 
+</code></pre>
+
+<p><strong>10. 將 vsftpd 設為系統開機後自動執行</strong></p>
+
+<pre><code>chkconfig vsftpd on 
+</code></pre>
+
+<p><strong>11. 防火牆開放 ftp port</strong></p>
+
+<pre><code>vi /etc/sysconfig/iptables 
+</code></pre>
+
+<p>新增內容如下:</p>
+
+<pre><code>-A INPUT -p tcp -m state --state NEW -m tcp --dport 21 -j ACCEPT
+</code></pre>
 ]]></content>
   </entry>
   

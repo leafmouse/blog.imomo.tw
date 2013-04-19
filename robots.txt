@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: 
 
-Sitemap: http://leafmouse.github.io/blog/sitemap.xml 
+Sitemap: http://blog.imomo.tw/sitemap.xml 
