@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Jim's Blog]]></title>
-  <link href="http://leafmouse.github.io/blog/atom.xml" rel="self"/>
+  <title><![CDATA[Category: Linux | Jim's Blog]]></title>
+  <link href="http://leafmouse.github.io/blog/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://leafmouse.github.io/blog/"/>
   <updated>2013-04-19T12:55:11+08:00</updated>
   <id>http://leafmouse.github.io/blog/</id>

@@ -5,12 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>hello world - My Octopress Blog</title>
-  <meta name="author" content="Your Name">
+  <title>Apache Reverse Proxy 實作筆記 - Jim's Blog</title>
+  <meta name="author" content="Jim Chen">
 
   
-  <meta name="description" content="
-">
+  <meta name="description" content="以下是使用 Apache 實作 Reverse Proxy 編輯Apache設定檔 vi /etc/httpd/conf/httpd.conf 檢查Apache是否安裝mod_proxy模組 搜尋設定檔中是否有下列二行 LoadModule proxy_module modules/ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -22,7 +21,7 @@
   <link rel="canonical" href="http://leafmouse.github.io/blog/blog/2013/04/19/hello-world">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <link href="/atom.xml" rel="alternate" title="My Octopress Blog" type="application/atom+xml">
+  <link href="/atom.xml" rel="alternate" title="Jim's Blog" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
@@ -37,9 +36,9 @@
 
 <body   >
   <header role="banner"><hgroup>
-  <h1><a href="/">My Octopress Blog</a></h1>
+  <h1><a href="/">Jim's Blog</a></h1>
   
-    <h2>A blogging framework for hackers.</h2>
+    <h2>IT Implementtation Notes</h2>
   
 </hgroup>
 
@@ -69,7 +68,7 @@
   
   <header>
     
-      <h1 class="entry-title">Hello World</h1>
+      <h1 class="entry-title">Apache Reverse Proxy 實作筆記</h1>
     
     
       <p class="meta">
@@ -92,7 +91,40 @@
   </header>
 
 
-<div class="entry-content">
+<div class="entry-content"><h2>以下是使用 Apache 實作 Reverse Proxy</h2>
+
+<ol>
+<li><p>編輯Apache設定檔</p>
+
+<pre><code> vi /etc/httpd/conf/httpd.conf
+</code></pre></li>
+<li><p>檢查Apache是否安裝mod_proxy模組</p>
+
+<p> 搜尋設定檔中是否有下列二行</p>
+
+<pre><code> LoadModule proxy_module modules/mod_proxy.so
+ LoadModule proxy_http_module modules/mod_proxy_http.so
+</code></pre></li>
+<li><p>拿掉開啟proxy功能</p>
+
+<pre><code> ProxyRequests Off 
+
+ &lt;Proxy *&gt; 
+ Order deny,allow 
+ Deny from all 
+ Allow from all 
+ &lt;/Proxy&gt; 
+</code></pre></li>
+<li><p>ProxyPassReverse設定</p>
+
+<pre><code> ProxyVia On 
+ ProxyPass /redir http://another_ip_address/redir 
+ ProxyPassReverse /redir http://another_ip_address/redir 
+</code></pre></li>
+</ol>
+
+
+<p>[Reference]http://www.wretch.cc/blog/siaocheng/2878629</p>
 </div>
 
 
@@ -101,7 +133,7 @@
       
   
 
-<span class="byline author vcard">Posted by <span class="fn">Your Name</span></span>
+<span class="byline author vcard">Posted by <span class="fn">Jim Chen</span></span>
 
       
 
@@ -117,6 +149,12 @@
 
 <time datetime="2013-04-19T07:03:00+08:00" pubdate data-updated="true">Apr 19<span>th</span>, 2013</time>
       
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/linux/'>Linux</a>
+  
+</span>
 
 
     </p>
@@ -146,7 +184,7 @@
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2013/04/19/hello-world/">hello world</a>
+        <a href="/blog/2013/04/19/hello-world/">Apache Reverse Proxy 實作筆記</a>
       </li>
     
   </ul>
@@ -163,7 +201,7 @@
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2013 - Your Name -
+  Copyright &copy; 2013 - Jim Chen -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
