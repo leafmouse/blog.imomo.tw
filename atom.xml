@@ -4,7 +4,7 @@
   <title><![CDATA[Jim's Blog]]></title>
   <link href="http://leafmouse.github.io/blog/atom.xml" rel="self"/>
   <link href="http://leafmouse.github.io/blog/"/>
-  <updated>2013-04-19T22:50:08+08:00</updated>
+  <updated>2013-04-19T23:36:23+08:00</updated>
   <id>http://leafmouse.github.io/blog/</id>
   <author>
     <name><![CDATA[Jim Chen]]></name>
@@ -65,10 +65,10 @@
 <ol>
 <li><p>執行下列指令建立新的文章</p>
 
-<pre><code> rake new_post["new post name"]
+<pre><code> rake new_post["新文章標題"]
 </code></pre></li>
 <li><p>使用 Sublime Text 2 或其他編輯軟體編輯文章</p></li>
-<li><p>執行下列指令以利於本機中先預覽 (http://localhost:4000)</p>
+<li><p>執行下列指令以利於本機中先預覽 <a href="http://localhost:4000">http://localhost:4000</a></p>
 
 <pre><code> rake preview
 </code></pre></li>
