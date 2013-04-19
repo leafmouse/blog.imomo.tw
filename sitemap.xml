@@ -1,16 +1,22 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
+        <loc>
+            http://leafmouse.github.io/blog/blog/2013/04/18/fa-biao-octopresswen-zhang-de-liu-cheng/
+        </loc>
+        <lastmod>2013-04-19T18:25:35+08:00</lastmod>
+    </url>
+    <url>
         <loc>http://leafmouse.github.io/blog/blog/2013/04/19/hello-world/</loc>
         <lastmod>2013-04-19T16:06:57+08:00</lastmod>
     </url>
     <url>
         <loc>http://leafmouse.github.io/blog/blog/archives/</loc>
-        <lastmod>2013-04-19T16:06:57+08:00</lastmod>
+        <lastmod>2013-04-19T18:25:35+08:00</lastmod>
     </url>
     <url>
         <loc>http://leafmouse.github.io/blog/</loc>
-        <lastmod>2013-04-19T16:06:57+08:00</lastmod>
+        <lastmod>2013-04-19T18:25:35+08:00</lastmod>
     </url>
     <url>
         <loc>http://leafmouse.github.io/blog/robots.txt</loc>

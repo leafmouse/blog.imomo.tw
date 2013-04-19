@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Jim's Blog]]></title>
-  <link href="http://leafmouse.github.io/blog/atom.xml" rel="self"/>
+  <title><![CDATA[Category: Octopress | Jim's Blog]]></title>
+  <link href="http://leafmouse.github.io/blog/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://leafmouse.github.io/blog/"/>
   <updated>2013-04-19T22:50:08+08:00</updated>
   <id>http://leafmouse.github.io/blog/</id>
@@ -12,48 +12,6 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
-  
-  <entry>
-    <title type="html"><![CDATA[Apache Reverse Proxy 實作筆記]]></title>
-    <link href="http://leafmouse.github.io/blog/blog/2013/04/19/hello-world/"/>
-    <updated>2013-04-19T07:03:00+08:00</updated>
-    <id>http://leafmouse.github.io/blog/blog/2013/04/19/hello-world</id>
-    <content type="html"><![CDATA[<h2>以下是使用 Apache 實作 Reverse Proxy</h2>
-
-<ol>
-<li><p>編輯Apache設定檔</p>
-
-<pre><code> vi /etc/httpd/conf/httpd.conf
-</code></pre></li>
-<li><p>檢查Apache是否安裝mod_proxy模組</p>
-
-<p> 搜尋設定檔中是否有下列二行</p>
-
-<pre><code> LoadModule proxy_module modules/mod_proxy.so
- LoadModule proxy_http_module modules/mod_proxy_http.so
-</code></pre></li>
-<li><p>拿掉開啟proxy功能</p>
-
-<pre><code> ProxyRequests Off 
-
- &lt;Proxy *&gt; 
- Order deny,allow 
- Deny from all 
- Allow from all 
- &lt;/Proxy&gt; 
-</code></pre></li>
-<li><p>ProxyPassReverse設定</p>
-
-<pre><code> ProxyVia On 
- ProxyPass /redir http://another_ip_address/redir 
- ProxyPassReverse /redir http://another_ip_address/redir
-</code></pre></li>
-</ol>
-
-
-<p>Reference: <a href="http://www.wretch.cc/blog/siaocheng/2878629">http://www.wretch.cc/blog/siaocheng/2878629</a></p>
-]]></content>
-  </entry>
   
   <entry>
     <title type="html"><![CDATA[發表Octopress文章的流程]]></title>
