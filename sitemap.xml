@@ -1,27 +1,31 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
-        <loc>http://blog.imomo.tw/blog/2013/04/17/fa-biao-octopresswen-zhang-de-liu-cheng/</loc>
+        <loc>
+            http://leafmouse.github.io/blog/blog/2013/04/17/fa-biao-octopresswen-zhang-de-liu-cheng/
+        </loc>
         <lastmod>2013-04-20T05:55:07+08:00</lastmod>
     </url>
     <url>
-        <loc>http://blog.imomo.tw/blog/2013/04/18/hello-world/</loc>
+        <loc>http://leafmouse.github.io/blog/blog/2013/04/18/hello-world/</loc>
         <lastmod>2013-04-20T05:55:08+08:00</lastmod>
     </url>
     <url>
-        <loc>http://blog.imomo.tw/blog/2013/04/19/vsftpd-virtual-user-shi-zuo-bi-ji/</loc>
+        <loc>
+            http://leafmouse.github.io/blog/blog/2013/04/19/vsftpd-virtual-user-shi-zuo-bi-ji/
+        </loc>
         <lastmod>2013-04-20T05:55:14+08:00</lastmod>
     </url>
     <url>
-        <loc>http://blog.imomo.tw/blog/archives/</loc>
+        <loc>http://leafmouse.github.io/blog/blog/archives/</loc>
         <lastmod>2013-04-20T05:55:14+08:00</lastmod>
     </url>
     <url>
-        <loc>http://blog.imomo.tw/</loc>
+        <loc>http://leafmouse.github.io/blog/</loc>
         <lastmod>2013-04-20T05:55:14+08:00</lastmod>
     </url>
     <url>
-        <loc>http://blog.imomo.tw/robots.txt</loc>
+        <loc>http://leafmouse.github.io/blog/robots.txt</loc>
         <lastmod>2013-04-19T06:25:32+08:00</lastmod>
     </url>
 </urlset>
