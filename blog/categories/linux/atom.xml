@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Linux | Jim's Blog]]></title>
   <link href="http://blog.imomo.tw/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://blog.imomo.tw/"/>
-  <updated>2013-04-20T05:48:45+08:00</updated>
+  <updated>2013-04-20T05:55:59+08:00</updated>
   <id>http://blog.imomo.tw/</id>
   <author>
     <name><![CDATA[Jim Chen]]></name>
@@ -14,50 +14,10 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Apache Reverse Proxy 實作筆記]]></title>
-    <link href="http://blog.imomo.tw/blog/2013/04/19/hello-world/"/>
-    <updated>2013-04-19T07:03:00+08:00</updated>
-    <id>http://blog.imomo.tw/blog/2013/04/19/hello-world</id>
-    <content type="html"><![CDATA[<p><strong>1. 編輯Apache設定檔</strong></p>
-
-<pre><code>vi /etc/httpd/conf/httpd.conf
-</code></pre>
-
-<p><strong>2. 檢查Apache是否安裝mod_proxy模組</strong></p>
-
-<p>搜尋設定檔中是否有下列二行設定</p>
-
-<pre><code>LoadModule proxy_module modules/mod_proxy.so
-LoadModule proxy_http_module modules/mod_proxy_http.so
-</code></pre>
-
-<p><strong>3. 拿掉開啟proxy功能</strong></p>
-
-<pre><code>ProxyRequests Off 
-
-&lt;Proxy *&gt; 
-Order deny,allow 
-Deny from all 
-Allow from all 
-&lt;/Proxy&gt; 
-</code></pre>
-
-<p><strong>4. ProxyPassReverse設定</strong></p>
-
-<pre><code>ProxyVia On 
-ProxyPass /redir http://another_ip_address/redir 
-ProxyPassReverse /redir http://another_ip_address/redir
-</code></pre>
-
-<p>Reference: <a href="http://www.wretch.cc/blog/siaocheng/2878629">http://www.wretch.cc/blog/siaocheng/2878629</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
     <title type="html"><![CDATA[vsftpd virtual user 實作筆記]]></title>
-    <link href="http://blog.imomo.tw/blog/2013/03/25/vsftpd-virtual-user-shi-zuo-bi-ji/"/>
-    <updated>2013-03-25T17:23:00+08:00</updated>
-    <id>http://blog.imomo.tw/blog/2013/03/25/vsftpd-virtual-user-shi-zuo-bi-ji</id>
+    <link href="http://blog.imomo.tw/blog/2013/04/19/vsftpd-virtual-user-shi-zuo-bi-ji/"/>
+    <updated>2013-04-19T00:00:00+08:00</updated>
+    <id>http://blog.imomo.tw/blog/2013/04/19/vsftpd-virtual-user-shi-zuo-bi-ji</id>
     <content type="html"><![CDATA[<p>工作上為了避免網頁維護人員有意或無意的更動到系統的檔案<br/>
 於是研究一下使用Virtual User而不實際使用系統帳號來登入<br/>
 Web Server</p>
@@ -202,6 +162,46 @@ chown -R ftpuser:ftpuser /home/ftpuser
 
 <pre><code>-A INPUT -p tcp -m state --state NEW -m tcp --dport 21 -j ACCEPT
 </code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Apache Reverse Proxy 實作筆記]]></title>
+    <link href="http://blog.imomo.tw/blog/2013/04/18/hello-world/"/>
+    <updated>2013-04-18T07:03:00+08:00</updated>
+    <id>http://blog.imomo.tw/blog/2013/04/18/hello-world</id>
+    <content type="html"><![CDATA[<p><strong>1. 編輯Apache設定檔</strong></p>
+
+<pre><code>vi /etc/httpd/conf/httpd.conf
+</code></pre>
+
+<p><strong>2. 檢查Apache是否安裝mod_proxy模組</strong></p>
+
+<p>搜尋設定檔中是否有下列二行設定</p>
+
+<pre><code>LoadModule proxy_module modules/mod_proxy.so
+LoadModule proxy_http_module modules/mod_proxy_http.so
+</code></pre>
+
+<p><strong>3. 拿掉開啟proxy功能</strong></p>
+
+<pre><code>ProxyRequests Off 
+
+&lt;Proxy *&gt; 
+Order deny,allow 
+Deny from all 
+Allow from all 
+&lt;/Proxy&gt; 
+</code></pre>
+
+<p><strong>4. ProxyPassReverse設定</strong></p>
+
+<pre><code>ProxyVia On 
+ProxyPass /redir http://another_ip_address/redir 
+ProxyPassReverse /redir http://another_ip_address/redir
+</code></pre>
+
+<p>Reference: <a href="http://www.wretch.cc/blog/siaocheng/2878629">http://www.wretch.cc/blog/siaocheng/2878629</a></p>
 ]]></content>
   </entry>
   
