@@ -4,7 +4,7 @@
   <title><![CDATA[Jim's Blog]]></title>
   <link href="http://leafmouse.github.io/blog/atom.xml" rel="self"/>
   <link href="http://leafmouse.github.io/blog/"/>
-  <updated>2013-04-20T08:41:04+08:00</updated>
+  <updated>2013-04-26T18:55:42+08:00</updated>
   <id>http://leafmouse.github.io/blog/</id>
   <author>
     <name><![CDATA[Jim Chen]]></name>
@@ -234,6 +234,73 @@ ProxyPassReverse /redir http://another_ip_address/redir
 
 <p><strong>6. 同時用git add, git commit,
    和git push origin site 提交site分支的更改</strong></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Apache Anti DDOS 實作筆記]]></title>
+    <link href="http://leafmouse.github.io/blog/blog/2013/03/14/apache-anti-ddos-shi-zuo-bi-ji/"/>
+    <updated>2013-03-14T11:10:00+08:00</updated>
+    <id>http://leafmouse.github.io/blog/blog/2013/03/14/apache-anti-ddos-shi-zuo-bi-ji</id>
+    <content type="html"><![CDATA[<p>mod_evasive是apache的3rd party模組
+利用限定來源的 HTTP 存取方式來避免遭受到
+拒絕服務攻擊</p>
+
+<p><strong>安裝 mod_evasive流程</strong></p>
+
+<p>先安裝必要套件</p>
+
+<pre><code>yum install libxml2 libxml2-devel httpd-devel pcre-devel curl-devel
+</code></pre>
+
+<h4><strong>1. 下載</strong></h4>
+
+<pre><code>wget http://www.zdziarski.com/blog/wp-content/uploads/2010/02/mod_evasive_1.10.1.tar.gz 
+</code></pre>
+
+<h4><strong>2. 安裝</strong></h4>
+
+<pre><code>tar -zxvf mod_evasive_1.10.1.tar.gz 
+cd mod_evasive 
+apxs -i -a -c mod_evasive20.c 
+</code></pre>
+
+<h4><strong>3. 編輯Apache設定檔,新增相關設定</strong></h4>
+
+<pre><code>vi /etc/httpd/conf/httpd.conf 
+</code></pre>
+
+<h5>DDOS Moudle</h5>
+
+<pre><code>LoadModule evasive20_module modules/mod_evasive20.so
+LoadModule evasive20_module /usr/lib/httpd/modules/mod_evasive20.so
+</code></pre>
+
+<h5>Anti D.o.S</h5>
+
+<pre><code>&lt;IfModule mod_evasive20.c&gt;
+DOSHashTableSize 3097
+DOSPageCount 2
+DOSSiteCount 50
+DOSPageInterval 1
+DOSSiteInterval 1
+DOSBlockingPeriod 1800
+DOSEmailNotify admin@domain.com
+DOSLogdir /var/log/httpd_DoS
+DOSWhitelist 127.0.0.1
+DOSWhitelist 1.1.1.1
+DOSWhitelist 1.2.3.4
+&lt;/IfModule&gt;
+</code></pre>
+
+<h4>4. 重啟Apache服務</h4>
+
+<pre><code>/etc/init.d/httpd restart
+</code></pre>
+
+<h4><strong>5. 以 test.pl 測試 mod_evasive 是否有正常運作</strong></h4>
+
+<p>Reference: <a href="">http://www.openfoundry.org/tw/tech-column/8180&#8211;modevasive-dos-</a></p>
 ]]></content>
   </entry>
   
