@@ -404,8 +404,8 @@ ProxyPassReverse /redir http://another_ip_address/redir
   </header>
 
 
-  <div class="entry-content"><p>mod_evasive是apache的3rd party模組
-利用限定來源的 HTTP 存取方式來避免遭受到
+  <div class="entry-content"><p>mod_evasive是apache的3rd party模組<br>
+利用限定來源的 HTTP 存取方式來避免遭受到<br>
 拒絕服務攻擊</p>
 
 <p><strong>安裝 mod_evasive流程</strong></p>
@@ -415,30 +415,30 @@ ProxyPassReverse /redir http://another_ip_address/redir
 <pre><code>yum install libxml2 libxml2-devel httpd-devel pcre-devel curl-devel
 </code></pre>
 
-<h4><strong>1. 下載</strong></h4>
+<h4>1. 下載</h4>
 
 <pre><code>wget http://www.zdziarski.com/blog/wp-content/uploads/2010/02/mod_evasive_1.10.1.tar.gz 
 </code></pre>
 
-<h4><strong>2. 安裝</strong></h4>
+<h4>2. 安裝</h4>
 
 <pre><code>tar -zxvf mod_evasive_1.10.1.tar.gz 
 cd mod_evasive 
 apxs -i -a -c mod_evasive20.c 
 </code></pre>
 
-<h4><strong>3. 編輯Apache設定檔,新增相關設定</strong></h4>
+<h4>3. 編輯Apache設定檔,新增相關設定</h4>
 
 <pre><code>vi /etc/httpd/conf/httpd.conf 
 </code></pre>
 
-<h5>DDOS Moudle</h5>
+<p><strong>DDOS Moudle</strong></p>
 
 <pre><code>LoadModule evasive20_module modules/mod_evasive20.so
 LoadModule evasive20_module /usr/lib/httpd/modules/mod_evasive20.so
 </code></pre>
 
-<h5>Anti D.o.S</h5>
+<p><strong>Anti D.o.S</strong></p>
 
 <pre><code>&lt;IfModule mod_evasive20.c&gt;
 DOSHashTableSize 3097
@@ -460,9 +460,9 @@ DOSWhitelist 1.2.3.4
 <pre><code>/etc/init.d/httpd restart
 </code></pre>
 
-<h4><strong>5. 以 test.pl 測試 mod_evasive 是否有正常運作</strong></h4>
+<h4>5. 以 test.pl 測試 mod_evasive 是否有正常運作</h4>
 
-<p>Reference: <a href="">http://www.openfoundry.org/tw/tech-column/8180&#8211;modevasive-dos-</a></p>
+<p>Reference: <a href="http://www.openfoundry.org/tw/tech-column/8180--modevasive-dos-]">http://www.openfoundry.org/tw/tech-column/8180&#8211;modevasive-dos-</a></p>
 </div>
   
   
