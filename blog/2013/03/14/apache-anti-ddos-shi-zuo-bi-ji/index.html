@@ -104,19 +104,19 @@
 <pre><code>yum install libxml2 libxml2-devel httpd-devel pcre-devel curl-devel
 </code></pre>
 
-<h4>1. 下載</h4>
+<h3>1. 下載</h3>
 
 <pre><code>wget http://www.zdziarski.com/blog/wp-content/uploads/2010/02/mod_evasive_1.10.1.tar.gz 
 </code></pre>
 
-<h4>2. 安裝</h4>
+<h3>2. 安裝</h3>
 
 <pre><code>tar -zxvf mod_evasive_1.10.1.tar.gz 
 cd mod_evasive 
 apxs -i -a -c mod_evasive20.c 
 </code></pre>
 
-<h4>3. 編輯Apache設定檔,新增相關設定</h4>
+<h3>3. 編輯Apache設定檔,新增相關設定</h3>
 
 <pre><code>vi /etc/httpd/conf/httpd.conf 
 </code></pre>
@@ -144,12 +144,12 @@ DOSWhitelist 1.2.3.4
 &lt;/IfModule&gt;
 </code></pre>
 
-<h4>4. 重啟Apache服務</h4>
+<h3>4. 重啟Apache服務</h3>
 
 <pre><code>/etc/init.d/httpd restart
 </code></pre>
 
-<h4>5. 以 test.pl 測試 mod_evasive 是否有正常運作</h4>
+<h3>5. 以 test.pl 測試 mod_evasive 是否有正常運作</h3>
 
 <p>Reference: <a href="http://www.openfoundry.org/tw/tech-column/8180--modevasive-dos-]">http://www.openfoundry.org/tw/tech-column/8180&#8211;modevasive-dos-</a></p>
 </div>
