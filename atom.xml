@@ -4,7 +4,7 @@
   <title><![CDATA[Jim's Blog]]></title>
   <link href="http://leafmouse.github.io/blog/atom.xml" rel="self"/>
   <link href="http://leafmouse.github.io/blog/"/>
-  <updated>2013-05-04T06:06:14+08:00</updated>
+  <updated>2013-05-04T06:15:05+08:00</updated>
   <id>http://leafmouse.github.io/blog/</id>
   <author>
     <name><![CDATA[Jim Chen]]></name>
@@ -48,7 +48,7 @@ Tesseract-OCR 3.0.2 (OCR Engine)</p>
 <pre><code>wget http://www.leptonica.org/source/leptonica-1.69.tar.gz
 </code></pre>
 
-<p>解開後切換到 leptonica-1.69 目錄 進行安裝</p>
+<p>解開並進行安裝</p>
 
 <pre><code>./configure
 make
@@ -62,7 +62,7 @@ make install
 <pre><code>wget https://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.02.02.tar.gz
 </code></pre>
 
-<p>解開後切換到 tesseract-3.0.2 目錄 進行安裝</p>
+<p>解開並進行安裝</p>
 
 <pre><code>./autogen.sh
 ./configure
