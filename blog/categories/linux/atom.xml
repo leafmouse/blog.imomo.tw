@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Linux | Jim's Blog]]></title>
   <link href="http://leafmouse.github.io/blog/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://leafmouse.github.io/blog/"/>
-  <updated>2013-05-04T07:30:32+08:00</updated>
+  <updated>2013-05-04T07:40:41+08:00</updated>
   <id>http://leafmouse.github.io/blog/</id>
   <author>
     <name><![CDATA[Jim Chen]]></name>
@@ -131,18 +131,14 @@ read only = no
 <p>列出伺服器可用的分享清單</p>
 
 <pre><code>/usr/local/samba/bin/smbclient -L localhost -U%
-</code></pre>
 
-<p>```
-Sharename       Type       Comment</p>
-
-<hr />
-
-<p>netlogon        Disk
+Sharename       Type       Comment
+---------       ----       -------
+netlogon        Disk
 sysvol          Disk
 IPC$            IPC        IPC Service (Samba 4.0.0alpha13)
 ADMIN$          Disk       DISK Service (Samba 4.0.0alpha13)
-```</p>
+</code></pre>
 
 <p>測試netlogon</p>
 
@@ -157,19 +153,17 @@ ADMIN$          Disk       DISK Service (Samba 4.0.0alpha13)
 <p>確認DNS解析否正常</p>
 
 <pre><code>host -t SRV _ldap._tcp.igs.local.
+
+    _ldap._tcp.igs.local has SRV record 0 100 389 dc.igs.local.
+
+host -t SRV _kerberos._udp.igs.local.
+
+    _kerberos._udp.igs.local has SRV record 0 100 88 dc.igs.local.
+
+host -t A dc.igs.local.
+
+    dc.igs.local has address 192.168.0.5
 </code></pre>
-
-<p><em>ldap.</em>tcp.igs.local has SRV record 0 100 389 dc.igs.local.</p>
-
-<pre><code>host -t SRV _kerberos._udp.igs.local.
-</code></pre>
-
-<p><em>kerberos.</em>udp.igs.local has SRV record 0 100 88 dc.igs.local.</p>
-
-<pre><code>host -t A dc.igs.local.
-</code></pre>
-
-<p><code>dc.igs.local has address 192.168.0.5</code></p>
 
 <h3>九、 Testing kerberos</h3>
 
@@ -211,19 +205,17 @@ export KRB5_KTNAM
 嚴格來說，你僅需KEYTAB_FILE或KRB5_KTNAME，但視你的Linux套件而定。</p>
 
 <pre><code>vi /etc/sysconfig/named
-</code></pre>
 
-<p><code>KEYTAB_FILE="/usr/local/samba/private/dns.keytab"</code></p>
+    KEYTAB_FILE="/usr/local/samba/private/dns.keytab"
+</code></pre>
 
 <p>然後在您的 named.conf 中的 option 需要加入以下二行</p>
 
 <pre><code>vi /usr/local/bind/etc/named.conf
-</code></pre>
 
-<p><code>
-tkey-gssapi-credential "DNS/igs.local";
-tkey-domain "IGS.LOCAL";
-</code></p>
+    tkey-gssapi-credential "DNS/igs.local";
+    tkey-domain "IGS.LOCAL";
+</code></pre>
 
 <p><img src="images/samba4/samba4-unc.jpg" alt="UNC路徑" /></p>
 ]]></content>
