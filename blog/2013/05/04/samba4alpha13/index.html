@@ -206,9 +206,14 @@ read only = no
 
 <p>列出伺服器可用的分享清單</p>
 
-<pre><code>/usr/local/samba/bin/smbclient -L localhost -U%
+<p>指令</p>
 
-Sharename       Type       Comment
+<pre><code>/usr/local/samba/bin/smbclient -L localhost -U%
+</code></pre>
+
+<p>分享清單</p>
+
+<pre><code>Sharename       Type       Comment
 ---------       ----       -------
 netlogon        Disk
 sysvol          Disk
@@ -228,17 +233,34 @@ ADMIN$          Disk       DISK Service (Samba 4.0.0alpha13)
 
 <p>確認DNS解析否正常</p>
 
+<p>指令</p>
+
 <pre><code>host -t SRV _ldap._tcp.igs.local.
+</code></pre>
 
-    _ldap._tcp.igs.local has SRV record 0 100 389 dc.igs.local.
+<p>結果</p>
 
-host -t SRV _kerberos._udp.igs.local.
+<pre><code>_ldap._tcp.igs.local has SRV record 0 100 389 dc.igs.local.
+</code></pre>
 
-    _kerberos._udp.igs.local has SRV record 0 100 88 dc.igs.local.
+<p>指令</p>
 
-host -t A dc.igs.local.
+<pre><code>host -t SRV _kerberos._udp.igs.local.
+</code></pre>
 
-    dc.igs.local has address 192.168.0.5
+<p>結果</p>
+
+<pre><code>_kerberos._udp.igs.local has SRV record 0 100 88 dc.igs.local.
+</code></pre>
+
+<p>指令</p>
+
+<pre><code>host -t A dc.igs.local.
+</code></pre>
+
+<p>結果</p>
+
+<pre><code>dc.igs.local has address 192.168.0.5
 </code></pre>
 
 <h3>九、 Testing kerberos</h3>
@@ -255,17 +277,18 @@ host -t A dc.igs.local.
 <pre><code>klist -e
 </code></pre>
 
-<p>Ticket cache: FILE:/tmp/krb5cc_0<br/>
-Default principal: administrator@IGS.LOCAL</p>
+<p>結果</p>
 
-<p>Valid starting     Expires            Service principal<br/>
-11/23/10 04:18:19  11/24/10 04:18:17  krbtgt/IGS.LOCAL@IGS.LOCAL</p>
+<pre><code>Ticket cache: FILE:/tmp/krb5cc_0  
+Default principal: administrator@IGS.LOCAL
 
-<pre><code>    Etype (skey, tkt): ArcFour with HMAC/md5, ArcFour with HMAC/md5
+Valid starting     Expires            Service principal  
+11/23/10 04:18:19  11/24/10 04:18:17  krbtgt/IGS.LOCAL@IGS.LOCAL  
+Etype (skey, tkt): ArcFour with HMAC/md5, ArcFour with HMAC/md5
+
+Kerberos 4 ticket cache: /tmp/tkt0  
+klist: You have no tickets cached
 </code></pre>
-
-<p>Kerberos 4 ticket cache: /tmp/tkt0<br/>
-klist: You have no tickets cached</p>
 
 <h3>十、 Configure kerberos DNS dynamic updates</h3>
 
@@ -280,20 +303,54 @@ export KRB5_KTNAM
 <p>這些應該放在你的bind9設定檔。在RedHat平台在 /etc/sysconfig/named。<br/>
 嚴格來說，你僅需KEYTAB_FILE或KRB5_KTNAME，但視你的Linux套件而定。</p>
 
-<pre><code>vi /etc/sysconfig/named
+<p>編輯 named</p>
 
-    KEYTAB_FILE="/usr/local/samba/private/dns.keytab"
+<pre><code>vi /etc/sysconfig/named
 </code></pre>
 
-<p>然後在您的 named.conf 中的 option 需要加入以下二行</p>
+<p>內容</p>
+
+<pre><code>KEYTAB_FILE="/usr/local/samba/private/dns.keytab"
+</code></pre>
+
+<p>編輯 named.conf 設定檔</p>
 
 <pre><code>vi /usr/local/bind/etc/named.conf
-
-    tkey-gssapi-credential "DNS/igs.local";
-    tkey-domain "IGS.LOCAL";
 </code></pre>
 
+<p>option 區段加入以下二行</p>
+
+<pre><code>tkey-gssapi-credential "DNS/igs.local";
+tkey-domain "IGS.LOCAL";
+</code></pre>
+
+<h3>十一、 Windows XP使用UNC路徑連入</h3>
+
 <p><img src="images/samba4/samba4-unc.jpg" alt="UNC路徑" /></p>
+
+<h3>十二、 用LDAP Admin連入</h3>
+
+<p><img src="images/samba4/ldapadmin.jpg" alt="UNC路徑" /></p>
+
+<h3>十三、 確認DNS查詢是否正常</h3>
+
+<p><img src="images/samba4/nslookup.jpg" alt="UNC路徑" /></p>
+
+<h3>十四、 加入網域</h3>
+
+<p><img src="images/samba4/join.jpg" alt="UNC路徑" /></p>
+
+<h3>十五、 確認加入網域後重新開機</h3>
+
+<p><img src="images/samba4/welcome_join.jpg" alt="UNC路徑" /></p>
+
+<h3>十六、 登入網域</h3>
+
+<p><img src="images/samba4/login.jpg" alt="UNC路徑" /></p>
+
+<h3>十七、 檢查系統內容確認已加入網域</h3>
+
+<p><img src="images/samba4/system.jpg" alt="UNC路徑" /></p>
 </div>
 
 
