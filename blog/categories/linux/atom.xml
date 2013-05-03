@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Linux | Jim's Blog]]></title>
   <link href="http://leafmouse.github.io/blog/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://leafmouse.github.io/blog/"/>
-  <updated>2013-05-04T07:25:03+08:00</updated>
+  <updated>2013-05-04T07:26:41+08:00</updated>
   <id>http://leafmouse.github.io/blog/</id>
   <author>
     <name><![CDATA[Jim Chen]]></name>
@@ -12,6 +12,222 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Samba4 alpha13 實作筆記]]></title>
+    <link href="http://leafmouse.github.io/blog/blog/2013/05/04/samba4alpha13/"/>
+    <updated>2013-05-04T06:48:00+08:00</updated>
+    <id>http://leafmouse.github.io/blog/blog/2013/05/04/samba4alpha13</id>
+    <content type="html"><![CDATA[<p>系統環境:
+CentOS 5.5</p>
+
+<p>所需套件:
+Samba： 4 alpha13</p>
+
+<h3>一、 Download Samba 4</h3>
+
+<p>以下二種做法請擇一使用</p>
+
+<pre><code>rsync -avz samba.org::ftp/unpacked/samba_4_0_test/ samba4
+git clone git://git.samba.org/samba.git samba4; cd samba4 &amp;&amp; git checkout -b v4-0-test origin/v4-0-test; cd ..
+</code></pre>
+
+<h3>二、 安裝相關套件</h3>
+
+<pre><code>yum install libacl-devel libblkid-devel gnutls-devel readline-devel python-devel bind autoconf gdb rsyslog-gssapi cyrus-sasl-gssapi
+</code></pre>
+
+<h3>三、 Compile Samba4</h3>
+
+<pre><code>cd samba4/source4
+./autogen-waf.sh
+./configure.developer
+make
+</code></pre>
+
+<h3>四、 Install Samba4</h3>
+
+<pre><code>make install
+</code></pre>
+
+<h3>五、 Provision Samba4</h3>
+
+<p>執行 Provision</p>
+
+<pre><code>./setup/provision --realm=myDomain.local --domain=myDomain --adminpass=yourPassword --server-role='domain controller'
+</code></pre>
+
+<p>會出現以下訊息</p>
+
+<pre><code>Setting up secrets.ldb
+Setting up the registry
+Setting up the privileges database
+Setting up idmap db
+Setting up SAM db
+Setting up sam.ldb partitions and settings
+Setting up sam.ldb rootDSE
+Pre-loading the Samba 4 and AD schema
+Adding DomainDN: DC=igs,DC=local
+Adding configuration container
+Setting up sam.ldb schema
+Reopening sam.ldb with new schema
+Setting up sam.ldb configuration data
+Setting up display specifiers
+Adding users container
+Modifying users container
+Adding computers container
+Modifying computers container
+Setting up sam.ldb data
+Setting up sam.ldb users and groups
+Setting up self join
+Setting up sam.ldb rootDSE marking as synchronized
+rndc: connect failed: 127.0.0.1#953: connection refused
+rndc: connect failed: 127.0.0.1#953: connection refused
+See /usr/local/samba/private/named.conf for an example  configuration include file for BIND
+and /usr/local/samba/private/named.txt for further documentation    required for secure DNS updates
+A Kerberos configuration suitable for Samba 4 has been generated    at /usr/local/samba/private/krb5.conf
+Please install the phpLDAPadmin configuration located at /usr/  local/samba/private/phpldapadmin-config.php into /etc/phpldapadmin/ config.php
+Once the above files are installed, your Samba4 server will be  ready to use
+Server Role:        domain controller
+Hostname:           dc
+NetBIOS Domain:     myDomain
+DNS Domain:         myDomain.local
+DOMAIN SID:         S-1-5-21-2696521599-3429856061-2704879584
+Admin password:     yourPassword
+</code></pre>
+
+<h3>六、 Create a share in smb.conf</h3>
+
+<p>編輯設定檔</p>
+
+<pre><code>vi /usr/local/samba/etc/smb.conf
+</code></pre>
+
+<p>檔案內容</p>
+
+<pre><code>[share] path = /data/share
+read only = no
+</code></pre>
+
+<p>建立分享目錄</p>
+
+<pre><code>mkdir -p /data/share
+</code></pre>
+
+<h3>七、 starting samba4</h3>
+
+<pre><code>/usr/local/samba/sbin/samba -i -M single
+</code></pre>
+
+<h3>八、 Testing Samba4</h3>
+
+<p>確認samba client版本</p>
+
+<pre><code>/usr/local/samba/bin/smbclient --version
+</code></pre>
+
+<p>Version 4.0.0alpha13</p>
+
+<p>列出伺服器可用的分享清單</p>
+
+<pre><code>/usr/local/samba/bin/smbclient -L localhost -U%
+</code></pre>
+
+<p>```
+Sharename       Type       Comment</p>
+
+<hr />
+
+<p>netlogon        Disk
+sysvol          Disk
+IPC$            IPC        IPC Service (Samba 4.0.0alpha13)
+ADMIN$          Disk       DISK Service (Samba 4.0.0alpha13)
+```</p>
+
+<p>測試netlogon</p>
+
+<pre><code>/usr/local/samba/bin/smbclient //localhost/netlogon -Uadministrator%yourPassword
+</code></pre>
+
+<p>您應該會得到 "smb>" 提示字元, 可存取 netlogon 目錄</p>
+
+<pre><code>smb: \&gt;
+</code></pre>
+
+<p>確認DNS解析否正常</p>
+
+<pre><code>host -t SRV _ldap._tcp.igs.local.
+</code></pre>
+
+<p><em>ldap.</em>tcp.igs.local has SRV record 0 100 389 dc.igs.local.</p>
+
+<pre><code>host -t SRV _kerberos._udp.igs.local.
+</code></pre>
+
+<p><em>kerberos.</em>udp.igs.local has SRV record 0 100 88 dc.igs.local.</p>
+
+<pre><code>host -t A dc.igs.local.
+</code></pre>
+
+<p><code>dc.igs.local has address 192.168.0.5</code></p>
+
+<h3>九、 Testing kerberos</h3>
+
+<p>若 DNS 解析否正常,您可以測試 kerberos伺服器</p>
+
+<pre><code>kinit administrator@IGS.LOCAL
+</code></pre>
+
+<p>Warning: Your password will expire in 41 days on Tue Jan 4 03:21:58 2011</p>
+
+<p>可列出快取中的 Kerberos tickets</p>
+
+<pre><code>klist -e
+</code></pre>
+
+<p>Ticket cache: FILE:/tmp/krb5cc_0<br/>
+Default principal: administrator@IGS.LOCAL</p>
+
+<p>Valid starting     Expires            Service principal<br/>
+11/23/10 04:18:19  11/24/10 04:18:17  krbtgt/IGS.LOCAL@IGS.LOCAL</p>
+
+<pre><code>    Etype (skey, tkt): ArcFour with HMAC/md5, ArcFour with HMAC/md5
+</code></pre>
+
+<p>Kerberos 4 ticket cache: /tmp/tkt0<br/>
+klist: You have no tickets cached</p>
+
+<h3>十、 Configure kerberos DNS dynamic updates</h3>
+
+<p>另外，你需要為 bind9 設置二個環境變數 (可加在 /etc/rc.d/rc.local)</p>
+
+<pre><code>KEYTAB_FILE="/usr/local/samba/private/dns.keytab"
+KRB5_KTNAME="/usr/local/samba/private/dns.keytab"
+export KEYTAB_FILE
+export KRB5_KTNAM
+</code></pre>
+
+<p>這些應該放在你的bind9設定檔。在RedHat平台在 /etc/sysconfig/named。<br/>
+嚴格來說，你僅需KEYTAB_FILE或KRB5_KTNAME，但視你的Linux套件而定。</p>
+
+<pre><code>vi /etc/sysconfig/named
+</code></pre>
+
+<p><code>KEYTAB_FILE="/usr/local/samba/private/dns.keytab"</code></p>
+
+<p>然後在您的 named.conf 中的 option 需要加入以下二行</p>
+
+<pre><code>vi /usr/local/bind/etc/named.conf
+</code></pre>
+
+<p><code>
+tkey-gssapi-credential "DNS/igs.local";
+tkey-domain "IGS.LOCAL";
+</code></p>
+
+<p><img src="images/samba4/samba4-unc.jpg" alt="UNC路徑" /></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Tesseract-OCR 安裝筆記]]></title>
@@ -365,222 +581,6 @@ DOSWhitelist 1.2.3.4
 <h3>5. 以 test.pl 測試 mod_evasive 是否有正常運作</h3>
 
 <p>Reference: <a href="http://www.openfoundry.org/tw/tech-column/8180--modevasive-dos-]">http://www.openfoundry.org/tw/tech-column/8180--modevasive-dos-</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Samba4 alpha13 實作筆記]]></title>
-    <link href="http://leafmouse.github.io/blog/blog/2010/06/02/samba4alpha13/"/>
-    <updated>2010-06-02T06:48:00+08:00</updated>
-    <id>http://leafmouse.github.io/blog/blog/2010/06/02/samba4alpha13</id>
-    <content type="html"><![CDATA[<p>系統環境:
-CentOS 5.5</p>
-
-<p>所需套件:
-Samba： 4 alpha13</p>
-
-<h3>一、 Download Samba 4</h3>
-
-<p>以下二種做法請擇一使用</p>
-
-<pre><code>rsync -avz samba.org::ftp/unpacked/samba_4_0_test/ samba4
-git clone git://git.samba.org/samba.git samba4; cd samba4 &amp;&amp; git checkout -b v4-0-test origin/v4-0-test; cd ..
-</code></pre>
-
-<h3>二、 安裝相關套件</h3>
-
-<pre><code>yum install libacl-devel libblkid-devel gnutls-devel readline-devel python-devel bind autoconf gdb rsyslog-gssapi cyrus-sasl-gssapi
-</code></pre>
-
-<h3>三、 Compile Samba4</h3>
-
-<pre><code>cd samba4/source4
-./autogen-waf.sh
-./configure.developer
-make
-</code></pre>
-
-<h3>四、 Install Samba4</h3>
-
-<pre><code>make install
-</code></pre>
-
-<h3>五、 Provision Samba4</h3>
-
-<p>執行 Provision</p>
-
-<pre><code>./setup/provision --realm=myDomain.local --domain=myDomain --adminpass=yourPassword --server-role='domain controller'
-</code></pre>
-
-<p>會出現以下訊息</p>
-
-<pre><code>Setting up secrets.ldb
-Setting up the registry
-Setting up the privileges database
-Setting up idmap db
-Setting up SAM db
-Setting up sam.ldb partitions and settings
-Setting up sam.ldb rootDSE
-Pre-loading the Samba 4 and AD schema
-Adding DomainDN: DC=igs,DC=local
-Adding configuration container
-Setting up sam.ldb schema
-Reopening sam.ldb with new schema
-Setting up sam.ldb configuration data
-Setting up display specifiers
-Adding users container
-Modifying users container
-Adding computers container
-Modifying computers container
-Setting up sam.ldb data
-Setting up sam.ldb users and groups
-Setting up self join
-Setting up sam.ldb rootDSE marking as synchronized
-rndc: connect failed: 127.0.0.1#953: connection refused
-rndc: connect failed: 127.0.0.1#953: connection refused
-See /usr/local/samba/private/named.conf for an example  configuration include file for BIND
-and /usr/local/samba/private/named.txt for further documentation    required for secure DNS updates
-A Kerberos configuration suitable for Samba 4 has been generated    at /usr/local/samba/private/krb5.conf
-Please install the phpLDAPadmin configuration located at /usr/  local/samba/private/phpldapadmin-config.php into /etc/phpldapadmin/ config.php
-Once the above files are installed, your Samba4 server will be  ready to use
-Server Role:        domain controller
-Hostname:           dc
-NetBIOS Domain:     myDomain
-DNS Domain:         myDomain.local
-DOMAIN SID:         S-1-5-21-2696521599-3429856061-2704879584
-Admin password:     yourPassword
-</code></pre>
-
-<h3>六、 Create a share in smb.conf</h3>
-
-<p>編輯設定檔</p>
-
-<pre><code>vi /usr/local/samba/etc/smb.conf
-</code></pre>
-
-<p>檔案內容</p>
-
-<pre><code>[share] path = /data/share
-read only = no
-</code></pre>
-
-<p>建立分享目錄</p>
-
-<pre><code>mkdir -p /data/share
-</code></pre>
-
-<h3>七、 starting samba4</h3>
-
-<pre><code>/usr/local/samba/sbin/samba -i -M single
-</code></pre>
-
-<h3>八、 Testing Samba4</h3>
-
-<p>確認samba client版本</p>
-
-<pre><code>/usr/local/samba/bin/smbclient --version
-</code></pre>
-
-<p>Version 4.0.0alpha13</p>
-
-<p>列出伺服器可用的分享清單</p>
-
-<pre><code>/usr/local/samba/bin/smbclient -L localhost -U%
-</code></pre>
-
-<p>```
-Sharename       Type       Comment</p>
-
-<hr />
-
-<p>netlogon        Disk
-sysvol          Disk
-IPC$            IPC        IPC Service (Samba 4.0.0alpha13)
-ADMIN$          Disk       DISK Service (Samba 4.0.0alpha13)
-```</p>
-
-<p>測試netlogon</p>
-
-<pre><code>/usr/local/samba/bin/smbclient //localhost/netlogon -Uadministrator%yourPassword
-</code></pre>
-
-<p>您應該會得到 "smb>" 提示字元, 可存取 netlogon 目錄</p>
-
-<pre><code>smb: \&gt;
-</code></pre>
-
-<p>確認DNS解析否正常</p>
-
-<pre><code>host -t SRV _ldap._tcp.igs.local.
-</code></pre>
-
-<p><em>ldap.</em>tcp.igs.local has SRV record 0 100 389 dc.igs.local.</p>
-
-<pre><code>host -t SRV _kerberos._udp.igs.local.
-</code></pre>
-
-<p><em>kerberos.</em>udp.igs.local has SRV record 0 100 88 dc.igs.local.</p>
-
-<pre><code>host -t A dc.igs.local.
-</code></pre>
-
-<p><code>dc.igs.local has address 192.168.0.5</code></p>
-
-<h3>九、 Testing kerberos</h3>
-
-<p>若 DNS 解析否正常,您可以測試 kerberos伺服器</p>
-
-<pre><code>kinit administrator@IGS.LOCAL
-</code></pre>
-
-<p>Warning: Your password will expire in 41 days on Tue Jan 4 03:21:58 2011</p>
-
-<p>可列出快取中的 Kerberos tickets</p>
-
-<pre><code>klist -e
-</code></pre>
-
-<p>Ticket cache: FILE:/tmp/krb5cc_0<br/>
-Default principal: administrator@IGS.LOCAL</p>
-
-<p>Valid starting     Expires            Service principal<br/>
-11/23/10 04:18:19  11/24/10 04:18:17  krbtgt/IGS.LOCAL@IGS.LOCAL</p>
-
-<pre><code>    Etype (skey, tkt): ArcFour with HMAC/md5, ArcFour with HMAC/md5
-</code></pre>
-
-<p>Kerberos 4 ticket cache: /tmp/tkt0<br/>
-klist: You have no tickets cached</p>
-
-<h3>十、 Configure kerberos DNS dynamic updates</h3>
-
-<p>另外，你需要為 bind9 設置二個環境變數 (可加在 /etc/rc.d/rc.local)</p>
-
-<pre><code>KEYTAB_FILE="/usr/local/samba/private/dns.keytab"
-KRB5_KTNAME="/usr/local/samba/private/dns.keytab"
-export KEYTAB_FILE
-export KRB5_KTNAM
-</code></pre>
-
-<p>這些應該放在你的bind9設定檔。在RedHat平台在 /etc/sysconfig/named。<br/>
-嚴格來說，你僅需KEYTAB_FILE或KRB5_KTNAME，但視你的Linux套件而定。</p>
-
-<pre><code>vi /etc/sysconfig/named
-</code></pre>
-
-<p><code>KEYTAB_FILE="/usr/local/samba/private/dns.keytab"</code></p>
-
-<p>然後在您的 named.conf 中的 option 需要加入以下二行</p>
-
-<pre><code>vi /usr/local/bind/etc/named.conf
-</code></pre>
-
-<p><code>
-tkey-gssapi-credential "DNS/igs.local";
-tkey-domain "IGS.LOCAL";
-</code></p>
-
-<p><img src="images/samba4/samba4-unc.jpg" alt="UNC路徑" /></p>
 ]]></content>
   </entry>
   
