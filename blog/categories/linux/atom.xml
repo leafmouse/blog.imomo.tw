@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Linux | Jim's Blog]]></title>
   <link href="http://leafmouse.github.io/blog/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://leafmouse.github.io/blog/"/>
-  <updated>2013-05-04T07:52:52+08:00</updated>
+  <updated>2013-05-04T07:53:34+08:00</updated>
   <id>http://leafmouse.github.io/blog/</id>
   <author>
     <name><![CDATA[Jim Chen]]></name>
@@ -18,10 +18,10 @@
     <link href="http://leafmouse.github.io/blog/blog/2013/05/04/samba4alpha13/"/>
     <updated>2013-05-04T07:28:00+08:00</updated>
     <id>http://leafmouse.github.io/blog/blog/2013/05/04/samba4alpha13</id>
-    <content type="html"><![CDATA[<p>系統環境:
+    <content type="html"><![CDATA[<p>系統環境:<br/>
 CentOS 5.5</p>
 
-<p>所需套件:
+<p>所需套件:<br/>
 Samba： 4 alpha13</p>
 
 <h3>一、 Download Samba 4</h3>
