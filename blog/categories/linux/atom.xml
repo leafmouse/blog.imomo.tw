@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Linux | Jim's Blog]]></title>
   <link href="http://leafmouse.github.io/blog/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://leafmouse.github.io/blog/"/>
-  <updated>2013-04-26T19:08:47+08:00</updated>
+  <updated>2013-05-04T06:06:14+08:00</updated>
   <id>http://leafmouse.github.io/blog/</id>
   <author>
     <name><![CDATA[Jim Chen]]></name>
@@ -12,6 +12,100 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Tesseract-OCR 安裝筆記]]></title>
+    <link href="http://leafmouse.github.io/blog/blog/2013/05/04/tesseract-ocr/"/>
+    <updated>2013-05-04T05:28:00+08:00</updated>
+    <id>http://leafmouse.github.io/blog/blog/2013/05/04/tesseract-ocr</id>
+    <content type="html"><![CDATA[<p>今天有朋友問我一個問題，圖形驗證碼是否有可能自動辨識<br>
+雖然沒做過這類的研究，但似乎也是挺有趣的議題，於是就<br>
+找資料玩看看，找到了下面的套件<br></p>
+
+<p>Tesseract是Open Source的OCR辨識引擎，早期由HP實驗室研發<br>
+後來貢獻給Open Source，再經由Google消除bug、優化後重新發佈</p>
+
+<p><strong>系統環境:</strong><br>
+CentOS 6.4</p>
+
+<p><strong>安裝套件:</strong><br>
+Tesseract-OCR 3.0.2 (OCR Engine)</p>
+
+<h3>1. 安裝編譯環境所需的套件</h3>
+
+<pre><code>yum install gcc gcc-c++ make
+</code></pre>
+
+<h3>2. 安裝其他必要套件</h3>
+
+<pre><code>yum install autoconf automake libtool libjpeg-devel libpng-devel libtiff-devel zlib-devel
+</code></pre>
+
+<h3>3. 安裝 leptonica library</h3>
+
+<p>下載 leptonica</p>
+
+<pre><code>wget http://www.leptonica.org/source/leptonica-1.69.tar.gz
+</code></pre>
+
+<p>解開後切換到 leptonica-1.69 目錄 進行安裝</p>
+
+<pre><code>./configure
+make
+make install
+</code></pre>
+
+<h3>4. 安裝 tesseract</h3>
+
+<p>下載 tesseract</p>
+
+<pre><code>wget https://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.02.02.tar.gz
+</code></pre>
+
+<p>解開後切換到 tesseract-3.0.2 目錄 進行安裝</p>
+
+<pre><code>./autogen.sh
+./configure
+make
+make install
+ldconfig
+</code></pre>
+
+<h3>5. 安裝 tesseract 語言包</h3>
+
+<p>下載語言包</p>
+
+<pre><code>wget https://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.02.eng.tar.gz
+</code></pre>
+
+<p>解開後將 tesseract-ocr/tessdata 目錄下所有檔案複製到 /usr/local/share/tessdata</p>
+
+<h3>6. 測試圖檔辨識功能</h3>
+
+<p>安裝目錄下有 phototest.tif 可做測試</p>
+
+<pre><code>tesseract phototest.tif phototest -l eng
+</code></pre>
+
+<p>stdout message</p>
+
+<pre><code>Tesseract Open Source OCR Engine v3.02.02 with Leptonica
+</code></pre>
+
+<p>檢視輸出檔案 phototest.txt</p>
+
+<pre><code>This is a lot of 12 point text to test the
+ocr code and see if it works on all types
+of file format.
+
+The quick brown dog jumped over the
+lazy fox. The quick brown dog jumped
+over the lazy fox. The quick brown dog
+jumped over the lazy fox. The quick
+brown dog jumped over the lazy fox.
+</code></pre>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[vsftpd virtual user 實作筆記]]></title>

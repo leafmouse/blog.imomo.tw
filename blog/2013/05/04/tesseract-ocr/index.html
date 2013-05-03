@@ -5,12 +5,14 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Apache Reverse Proxy 實作筆記 - Jim's Blog</title>
+  <title>Tesseract-OCR 安裝筆記 - Jim's Blog</title>
   <meta name="author" content="Jim Chen">
 
   
-  <meta name="description" content="1. 編輯Apache設定檔 vi /etc/httpd/conf/httpd.conf 2. 檢查Apache是否安裝mod_proxy模組 搜尋設定檔中是否有下列二行設定 LoadModule proxy_module modules/mod_proxy.so
-LoadModule &hellip;">
+  <meta name="description" content="今天有朋友問我一個問題，圖形驗證碼是否有可能自動辨識
+雖然沒做過這類的研究，但似乎也是挺有趣的議題，於是就
+找資料玩看看，找到了下面的套件 Tesseract是Open Source的OCR辨識引擎，早期由HP實驗室研發
+後來貢獻給Open Source，再經由Google消除bug、 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +21,7 @@ LoadModule &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://leafmouse.github.io/blog/blog/2013/04/18/hello-world">
+  <link rel="canonical" href="http://leafmouse.github.io/blog/blog/2013/05/04/tesseract-ocr">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Jim's Blog" type="application/atom+xml">
@@ -69,7 +71,7 @@ LoadModule &hellip;">
   
   <header>
     
-      <h1 class="entry-title">Apache Reverse Proxy 實作筆記</h1>
+      <h1 class="entry-title">Tesseract-OCR 安裝筆記</h1>
     
     
       <p class="meta">
@@ -85,45 +87,99 @@ LoadModule &hellip;">
   
 
 
-<time datetime="2013-04-18T07:03:00+08:00" pubdate data-updated="true">Apr 18<span>th</span>, 2013</time>
+<time datetime="2013-05-04T05:28:00+08:00" pubdate data-updated="true">May 4<span>th</span>, 2013</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p><strong>1. 編輯Apache設定檔</strong></p>
+<div class="entry-content"><p>今天有朋友問我一個問題，圖形驗證碼是否有可能自動辨識<br>
+雖然沒做過這類的研究，但似乎也是挺有趣的議題，於是就<br>
+找資料玩看看，找到了下面的套件<br></p>
 
-<pre><code>vi /etc/httpd/conf/httpd.conf
+<p>Tesseract是Open Source的OCR辨識引擎，早期由HP實驗室研發<br>
+後來貢獻給Open Source，再經由Google消除bug、優化後重新發佈</p>
+
+<p><strong>系統環境:</strong><br>
+CentOS 6.4</p>
+
+<p><strong>安裝套件:</strong><br>
+Tesseract-OCR 3.0.2 (OCR Engine)</p>
+
+<h3>1. 安裝編譯環境所需的套件</h3>
+
+<pre><code>yum install gcc gcc-c++ make
 </code></pre>
 
-<p><strong>2. 檢查Apache是否安裝mod_proxy模組</strong></p>
+<h3>2. 安裝其他必要套件</h3>
 
-<p>搜尋設定檔中是否有下列二行設定</p>
-
-<pre><code>LoadModule proxy_module modules/mod_proxy.so
-LoadModule proxy_http_module modules/mod_proxy_http.so
+<pre><code>yum install autoconf automake libtool libjpeg-devel libpng-devel libtiff-devel zlib-devel
 </code></pre>
 
-<p><strong>3. 拿掉開啟proxy功能</strong></p>
+<h3>3. 安裝 leptonica library</h3>
 
-<pre><code>ProxyRequests Off 
+<p>下載 leptonica</p>
 
-&lt;Proxy *&gt; 
-Order deny,allow 
-Deny from all 
-Allow from all 
-&lt;/Proxy&gt; 
+<pre><code>wget http://www.leptonica.org/source/leptonica-1.69.tar.gz
 </code></pre>
 
-<p><strong>4. ProxyPassReverse設定</strong></p>
+<p>解開後切換到 leptonica-1.69 目錄 進行安裝</p>
 
-<pre><code>ProxyVia On 
-ProxyPass /redir http://another_ip_address/redir 
-ProxyPassReverse /redir http://another_ip_address/redir
+<pre><code>./configure
+make
+make install
 </code></pre>
 
-<p>Reference: <a href="http://www.wretch.cc/blog/siaocheng/2878629">http://www.wretch.cc/blog/siaocheng/2878629</a></p>
+<h3>4. 安裝 tesseract</h3>
+
+<p>下載 tesseract</p>
+
+<pre><code>wget https://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.02.02.tar.gz
+</code></pre>
+
+<p>解開後切換到 tesseract-3.0.2 目錄 進行安裝</p>
+
+<pre><code>./autogen.sh
+./configure
+make
+make install
+ldconfig
+</code></pre>
+
+<h3>5. 安裝 tesseract 語言包</h3>
+
+<p>下載語言包</p>
+
+<pre><code>wget https://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.02.eng.tar.gz
+</code></pre>
+
+<p>解開後將 tesseract-ocr/tessdata 目錄下所有檔案複製到 /usr/local/share/tessdata</p>
+
+<h3>6. 測試圖檔辨識功能</h3>
+
+<p>安裝目錄下有 phototest.tif 可做測試</p>
+
+<pre><code>tesseract phototest.tif phototest -l eng
+</code></pre>
+
+<p>stdout message</p>
+
+<pre><code>Tesseract Open Source OCR Engine v3.02.02 with Leptonica
+</code></pre>
+
+<p>檢視輸出檔案 phototest.txt</p>
+
+<pre><code>This is a lot of 12 point text to test the
+ocr code and see if it works on all types
+of file format.
+
+The quick brown dog jumped over the
+lazy fox. The quick brown dog jumped
+over the lazy fox. The quick brown dog
+jumped over the lazy fox. The quick
+brown dog jumped over the lazy fox.
+</code></pre>
 </div>
 
 
@@ -146,7 +202,7 @@ ProxyPassReverse /redir http://another_ip_address/redir
   
 
 
-<time datetime="2013-04-18T07:03:00+08:00" pubdate data-updated="true">Apr 18<span>th</span>, 2013</time>
+<time datetime="2013-05-04T05:28:00+08:00" pubdate data-updated="true">May 4<span>th</span>, 2013</time>
       
 
 <span class="categories">
@@ -160,7 +216,7 @@ ProxyPassReverse /redir http://another_ip_address/redir
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://leafmouse.github.io/blog/blog/2013/04/18/hello-world/" data-via="" data-counturl="http://leafmouse.github.io/blog/blog/2013/04/18/hello-world/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://leafmouse.github.io/blog/blog/2013/05/04/tesseract-ocr/" data-via="" data-counturl="http://leafmouse.github.io/blog/blog/2013/05/04/tesseract-ocr/" >Tweet</a>
   
   
   
@@ -169,10 +225,8 @@ ProxyPassReverse /redir http://another_ip_address/redir
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/04/17/fa-biao-octopresswen-zhang-de-liu-cheng/" title="Previous Post: 發表Octopress文章的流程">&laquo; 發表Octopress文章的流程</a>
+        <a class="basic-alignment left" href="/blog/2013/04/19/vsftpd-virtual-user-shi-zuo-bi-ji/" title="Previous Post: vsftpd virtual user 實作筆記">&laquo; vsftpd virtual user 實作筆記</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/04/19/vsftpd-virtual-user-shi-zuo-bi-ji/" title="Next Post: vsftpd virtual user 實作筆記">vsftpd virtual user 實作筆記 &raquo;</a>
       
     </p>
   </footer>
