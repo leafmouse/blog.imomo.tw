@@ -4,7 +4,7 @@
   <title><![CDATA[Jim's Blog]]></title>
   <link href="http://leafmouse.github.io/blog/atom.xml" rel="self"/>
   <link href="http://leafmouse.github.io/blog/"/>
-  <updated>2013-05-04T06:45:50+08:00</updated>
+  <updated>2013-05-04T07:21:56+08:00</updated>
   <id>http://leafmouse.github.io/blog/</id>
   <author>
     <name><![CDATA[Jim Chen]]></name>
@@ -106,8 +106,6 @@ brown dog jumped over the lazy fox.
 </code></pre>
 
 <p>Reference: <a href="http://my.oschina.net/iceman/blog/40771">http://my.oschina.net/iceman/blog/40771</a></p>
-
-<p><img src="images/samba4/samba4-unc.jpg" alt="UNC路徑" /></p>
 ]]></content>
   </entry>
   
