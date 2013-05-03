@@ -4,7 +4,7 @@
   <title><![CDATA[Jim's Blog]]></title>
   <link href="http://leafmouse.github.io/blog/atom.xml" rel="self"/>
   <link href="http://leafmouse.github.io/blog/"/>
-  <updated>2013-05-04T07:53:34+08:00</updated>
+  <updated>2013-05-04T07:57:40+08:00</updated>
   <id>http://leafmouse.github.io/blog/</id>
   <author>
     <name><![CDATA[Jim Chen]]></name>
@@ -121,14 +121,17 @@ read only = no
 
 <h3>八、 Testing Samba4</h3>
 
-<p>確認samba client版本</p>
+<h5>確認samba client版本</h5>
 
 <pre><code>/usr/local/samba/bin/smbclient --version
 </code></pre>
 
-<p>Version 4.0.0alpha13</p>
+<p>版本如下</p>
 
-<p>列出伺服器可用的分享清單</p>
+<pre><code>Version 4.0.0alpha13
+</code></pre>
+
+<h5>列出伺服器可用的分享清單</h5>
 
 <p>指令</p>
 
@@ -155,7 +158,7 @@ ADMIN$          Disk       DISK Service (Samba 4.0.0alpha13)
 <pre><code>smb: \&gt;
 </code></pre>
 
-<p>確認DNS解析否正常</p>
+<h5>確認DNS解析否正常</h5>
 
 <p>指令</p>
 
