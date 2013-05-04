@@ -4,7 +4,7 @@
   <title><![CDATA[Jim's Blog]]></title>
   <link href="http://leafmouse.github.io/blog/atom.xml" rel="self"/>
   <link href="http://leafmouse.github.io/blog/"/>
-  <updated>2013-05-04T08:08:15+08:00</updated>
+  <updated>2013-05-04T08:12:37+08:00</updated>
   <id>http://leafmouse.github.io/blog/</id>
   <author>
     <name><![CDATA[Jim Chen]]></name>
@@ -18,11 +18,17 @@
     <link href="http://leafmouse.github.io/blog/blog/2013/05/04/samba4alpha13/"/>
     <updated>2013-05-04T07:28:00+08:00</updated>
     <id>http://leafmouse.github.io/blog/blog/2013/05/04/samba4alpha13</id>
-    <content type="html"><![CDATA[<p>系統環境:<br/>
+    <content type="html"><![CDATA[<br>
+
+
+<p><strong>系統環境:</strong><br/>
 CentOS 5.5</p>
 
-<p>所需套件:<br/>
+<p><strong>所需套件:</strong><br/>
 Samba： 4 alpha13</p>
+
+<p><strong>Lab網域名稱:</strong><br/>
+igs.local</p>
 
 <h3>一、 Download Samba 4</h3>
 
@@ -54,7 +60,7 @@ make
 
 <p>執行 Provision</p>
 
-<pre><code>./setup/provision --realm=myDomain.local --domain=myDomain --adminpass=yourPassword --server-role='domain controller'
+<pre><code>./setup/provision --realm=igs.local --domain=igs --adminpass=yourPassword --server-role='domain controller'
 </code></pre>
 
 <p>會出現以下訊息</p>
@@ -90,8 +96,8 @@ Please install the phpLDAPadmin configuration located at /usr/  local/samba/priv
 Once the above files are installed, your Samba4 server will be  ready to use
 Server Role:        domain controller
 Hostname:           dc
-NetBIOS Domain:     myDomain
-DNS Domain:         myDomain.local
+NetBIOS Domain:     igs
+DNS Domain:         igs.local
 DOMAIN SID:         S-1-5-21-2696521599-3429856061-2704879584
 Admin password:     yourPassword
 </code></pre>
