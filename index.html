@@ -909,6 +909,100 @@ ProxyPassReverse /redir http://another_ip_address/redir
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/03/14/apache-anti-ddos-shi-zuo-bi-ji/">Apache Anti DDOS 實作筆記</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-14T11:10:00+08:00" pubdate data-updated="true">Mar 14<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>mod_evasive是apache的3rd party模組<br>
+利用限定來源的 HTTP 存取方式來避免遭受到<br>
+拒絕服務攻擊</p>
+
+<p><strong>安裝 mod_evasive流程</strong></p>
+
+<p>先安裝必要套件</p>
+
+<pre><code>yum install libxml2 libxml2-devel httpd-devel pcre-devel curl-devel
+</code></pre>
+
+<h3>1. 下載</h3>
+
+<pre><code>wget http://www.zdziarski.com/blog/wp-content/uploads/2010/02/mod_evasive_1.10.1.tar.gz 
+</code></pre>
+
+<h3>2. 安裝</h3>
+
+<pre><code>tar -zxvf mod_evasive_1.10.1.tar.gz 
+cd mod_evasive 
+apxs -i -a -c mod_evasive20.c 
+</code></pre>
+
+<h3>3. 編輯Apache設定檔,新增相關設定</h3>
+
+<pre><code>vi /etc/httpd/conf/httpd.conf 
+</code></pre>
+
+<p><strong>DDOS Moudle</strong></p>
+
+<pre><code>LoadModule evasive20_module modules/mod_evasive20.so
+LoadModule evasive20_module /usr/lib/httpd/modules/mod_evasive20.so
+</code></pre>
+
+<p><strong>Anti D.o.S</strong></p>
+
+<pre><code>&lt;IfModule mod_evasive20.c&gt;
+DOSHashTableSize 3097
+DOSPageCount 2
+DOSSiteCount 50
+DOSPageInterval 1
+DOSSiteInterval 1
+DOSBlockingPeriod 1800
+DOSEmailNotify admin@domain.com
+DOSLogdir /var/log/httpd_DoS
+DOSWhitelist 127.0.0.1
+DOSWhitelist 1.1.1.1
+DOSWhitelist 1.2.3.4
+&lt;/IfModule&gt;
+</code></pre>
+
+<h3>4. 重啟Apache服務</h3>
+
+<pre><code>/etc/init.d/httpd restart
+</code></pre>
+
+<h3>5. 以 test.pl 測試 mod_evasive 是否有正常運作</h3>
+
+<p>Reference: <a href="http://www.openfoundry.org/tw/tech-column/8180--modevasive-dos-]">http://www.openfoundry.org/tw/tech-column/8180&#8211;modevasive-dos-</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
     <a href="/blog/archives">Blog Archives</a>
