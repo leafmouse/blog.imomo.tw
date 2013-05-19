@@ -5,14 +5,14 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Tesseract-OCR 安裝筆記 - Jim's Blog</title>
+  <title>Apache Anti DDOS 實作筆記 - Jim's Blog</title>
   <meta name="author" content="Jim Chen">
 
   
-  <meta name="description" content="今天有朋友問我一個問題，圖形驗證碼是否有可能自動辨識
-雖然沒做過這類的研究，但似乎也是挺有趣的議題，於是就
-找資料玩看看，找到了下面的套件 Tesseract是Open Source的OCR辨識引擎，早期由HP實驗室研發
-後來貢獻給Open Source，再經由Google消除bug、 &hellip;">
+  <meta name="description" content="以前管理的網頁伺服器，偶爾會遇到同事打來反應會連不上或很慢
+有時候甚至自已也無法使用SSH連入，連入後可以看到一大堆連線
+像是遭遇到SYN攻擊，所以便去尋找防制的做法，找到了以下的套件。 mod_evasive 是 apache 的 3rd party 模組，利用限定來源的
+HTTP &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -21,7 +21,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://leafmouse.github.io/blog/blog/2013/05/04/tesseract-ocr">
+  <link rel="canonical" href="http://leafmouse.github.io/blog/blog/2013/05/19/apache-anti-ddos">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Jim's Blog" type="application/atom+xml">
@@ -71,7 +71,7 @@
   
   <header>
     
-      <h1 class="entry-title">Tesseract-OCR 安裝筆記</h1>
+      <h1 class="entry-title">Apache Anti DDOS 實作筆記</h1>
     
     
       <p class="meta">
@@ -87,101 +87,85 @@
   
 
 
-<time datetime="2013-05-04T05:28:00+08:00" pubdate data-updated="true">May 4<span>th</span>, 2013</time>
+<time datetime="2013-05-19T17:13:00+08:00" pubdate data-updated="true">May 19<span>th</span>, 2013</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>今天有朋友問我一個問題，圖形驗證碼是否有可能自動辨識<br/>
-雖然沒做過這類的研究，但似乎也是挺有趣的議題，於是就<br/>
-找資料玩看看，找到了下面的套件</p>
+<div class="entry-content"><p>以前管理的網頁伺服器，偶爾會遇到同事打來反應會連不上或很慢<br/>
+有時候甚至自已也無法使用SSH連入，連入後可以看到一大堆連線<br/>
+像是遭遇到SYN攻擊，所以便去尋找防制的做法，找到了以下的套件。</p>
 
-<p>Tesseract是Open Source的OCR辨識引擎，早期由HP實驗室研發<br/>
-後來貢獻給Open Source，再經由Google消除bug、優化後重新發佈</p>
+<p>mod_evasive 是 apache 的 3rd party 模組，利用限定來源的<br/>
+HTTP 存取方式來避免遭受到拒絕服務攻擊</p>
 
-<p><strong>系統環境:</strong><br>
-CentOS 6.4</p>
+<p>必要安裝套件</p>
 
-<p><strong>安裝套件:</strong><br>
-Tesseract-OCR 3.0.2 (OCR Engine)</p>
-
-<h3>1. 安裝編譯環境所需的套件</h3>
-
-<pre><code>yum install gcc gcc-c++ make
+<pre><code>yum install libxml2 libxml2-devel httpd-devel pcre-devel curl-devel 
 </code></pre>
 
-<h3>2. 安裝其他必要套件</h3>
+<h3>1. 下載套件</h3>
 
-<pre><code>yum install autoconf automake libtool libjpeg-devel libpng-devel libtiff-devel zlib-devel
+<pre><code>wget http://www.zdziarski.com/blog/wp-content/uploads/2010/02/mod_evasive_1.10.1.tar.gz 
 </code></pre>
 
-<h3>3. 安裝 leptonica library</h3>
+<h3>2. 安裝套件</h3>
 
-<p>下載 leptonica</p>
-
-<pre><code>wget http://www.leptonica.org/source/leptonica-1.69.tar.gz
+<pre><code>tar -zxvf mod_evasive_1.10.1.tar.gz 
+cd mod_evasive 
+apxs -i -a -c mod_evasive20.c 
 </code></pre>
 
-<p>解開並進行安裝</p>
+<h3>3. Apache設定檔新增相關設定</h3>
 
-<pre><code>./configure
-make
-make install
+<pre><code>vi /etc/httpd/conf/httpd.conf 
 </code></pre>
 
-<h3>4. 安裝 tesseract</h3>
+<h3>DDOS Moudle</h3>
 
-<p>下載 tesseract</p>
-
-<pre><code>wget https://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.02.02.tar.gz
+<pre><code>LoadModule evasive20_module modules/mod_evasive20.so 
+LoadModule evasive20_module /usr/lib/httpd/modules/mod_evasive20.so 
 </code></pre>
 
-<p>解開並進行安裝</p>
+<h3>Anti D.o.S</h3>
 
-<pre><code>./autogen.sh
-./configure
-make
-make install
-ldconfig
+<pre><code>&lt;IfModule mod_evasive20.c&gt;
+DOSHashTableSize 3097
+DOSPageCount 2
+DOSSiteCount 50
+DOSPageInterval 1
+DOSSiteInterval 1
+DOSBlockingPeriod 1800
+DOSEmailNotify admin@domain.com
+DOSLogdir /var/log/httpd_DoS
+DOSWhitelist 127.0.0.1
+DOSWhitelist 1.1.1.1 
+DOSWhitelist 1.2.3.4 
+&lt;/IfModule&gt;
 </code></pre>
 
-<h3>5. 安裝 tesseract 語言包</h3>
+<h4>參數說明</h4>
 
-<p>下載語言包</p>
+<p><strong>DOSmailNotify</strong>   發現疑似攻擊時，要寄發通知的信箱<br/>
+<strong>DOSLogdir</strong>       設定LOG存放路徑<br/>
+<strong>DOSWhitelist</strong>    設定進行不阻擋的白名單IP</p>
 
-<pre><code>wget https://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.02.eng.tar.gz
+<h3>4. 重啟Apache服務</h3>
+
+<pre><code>/etc/init.d/httpd restart 
 </code></pre>
 
-<p>解開後將 tesseract-ocr/tessdata 目錄下所有檔案複製到 /usr/local/share/tessdata</p>
+<h3>5. 測試 mod_evasive 是否正常運作</h3>
 
-<h3>6. 測試圖檔辨識功能</h3>
+<p>mod_evasive 提供了測試程式 test.pl，可執行下列指令<br/>
+用以測試該模組是否有正常運作</p>
 
-<p>安裝目錄下有 phototest.tif 可做測試</p>
-
-<pre><code>tesseract phototest.tif phototest -l eng
+<pre><code>perl test.pl
 </code></pre>
 
-<p>stdout message</p>
-
-<pre><code>Tesseract Open Source OCR Engine v3.02.02 with Leptonica
-</code></pre>
-
-<p>檢視輸出檔案 phototest.txt</p>
-
-<pre><code>This is a lot of 12 point text to test the
-ocr code and see if it works on all types
-of file format.
-
-The quick brown dog jumped over the
-lazy fox. The quick brown dog jumped
-over the lazy fox. The quick brown dog
-jumped over the lazy fox. The quick
-brown dog jumped over the lazy fox.
-</code></pre>
-
-<p>Reference: <a href="http://my.oschina.net/iceman/blog/40771">http://my.oschina.net/iceman/blog/40771</a></p>
+<p>如果設定正常 perl.pl 會回傳 403 forbiden 等相關的訊息</p>
 </div>
 
 
@@ -204,21 +188,15 @@ brown dog jumped over the lazy fox.
   
 
 
-<time datetime="2013-05-04T05:28:00+08:00" pubdate data-updated="true">May 4<span>th</span>, 2013</time>
+<time datetime="2013-05-19T17:13:00+08:00" pubdate data-updated="true">May 19<span>th</span>, 2013</time>
       
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/linux/'>Linux</a>
-  
-</span>
 
 
     </p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://leafmouse.github.io/blog/blog/2013/05/04/tesseract-ocr/" data-via="" data-counturl="http://leafmouse.github.io/blog/blog/2013/05/04/tesseract-ocr/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://leafmouse.github.io/blog/blog/2013/05/19/apache-anti-ddos/" data-via="" data-counturl="http://leafmouse.github.io/blog/blog/2013/05/19/apache-anti-ddos/" >Tweet</a>
   
   
   
@@ -227,10 +205,8 @@ brown dog jumped over the lazy fox.
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/04/19/vsftpd-virtual-user-shi-zuo-bi-ji/" title="Previous Post: vsftpd virtual user 實作筆記">&laquo; vsftpd virtual user 實作筆記</a>
+        <a class="basic-alignment left" href="/blog/2013/05/04/samba4alpha13/" title="Previous Post: Samba4 alpha13 實作筆記">&laquo; Samba4 alpha13 實作筆記</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/05/04/samba4alpha13/" title="Next Post: Samba4 alpha13 實作筆記">Samba4 alpha13 實作筆記 &raquo;</a>
       
     </p>
   </footer>
