@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Linux | Jim's Blog]]></title>
   <link href="http://leafmouse.github.io/blog/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://leafmouse.github.io/blog/"/>
-  <updated>2013-05-19T18:21:48+08:00</updated>
+  <updated>2013-05-19T18:31:38+08:00</updated>
   <id>http://leafmouse.github.io/blog/</id>
   <author>
     <name><![CDATA[Jim Chen]]></name>
@@ -12,6 +12,90 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Apache Anti DDOS 實作筆記]]></title>
+    <link href="http://leafmouse.github.io/blog/blog/2013/05/19/apache-anti-ddos/"/>
+    <updated>2013-05-19T17:13:00+08:00</updated>
+    <id>http://leafmouse.github.io/blog/blog/2013/05/19/apache-anti-ddos</id>
+    <content type="html"><![CDATA[<p>以前管理的網頁伺服器，偶爾會遇到同事打來反應會連不上或很慢<br/>
+有時候甚至自已也無法使用SSH連入，連入後可以看到一大堆連線<br/>
+像是遭遇到SYN攻擊，所以便去尋找防制的做法，找到了以下的套件。</p>
+
+<p>mod_evasive 是 apache 的 3rd party 模組，利用限定來源的<br/>
+HTTP 存取方式來避免遭受到拒絕服務攻擊</p>
+
+<p>必要安裝套件</p>
+
+<pre><code>yum install libxml2 libxml2-devel httpd-devel pcre-devel curl-devel 
+</code></pre>
+
+<h3>1. 下載套件</h3>
+
+<pre><code>wget http://www.zdziarski.com/blog/wp-content/uploads/2010/02/mod_evasive_1.10.1.tar.gz 
+</code></pre>
+
+<h3>2. 安裝套件</h3>
+
+<pre><code>tar -zxvf mod_evasive_1.10.1.tar.gz 
+cd mod_evasive 
+apxs -i -a -c mod_evasive20.c 
+</code></pre>
+
+<h3>3. Apache設定檔新增相關設定</h3>
+
+<pre><code>vi /etc/httpd/conf/httpd.conf 
+</code></pre>
+
+<h3>DDOS Moudle</h3>
+
+<pre><code>LoadModule evasive20_module modules/mod_evasive20.so 
+LoadModule evasive20_module /usr/lib/httpd/modules/mod_evasive20.so 
+</code></pre>
+
+<h3>Anti D.o.S</h3>
+
+<pre><code>&lt;IfModule mod_evasive20.c&gt;
+DOSHashTableSize 3097
+DOSPageCount 2
+DOSSiteCount 50
+DOSPageInterval 1
+DOSSiteInterval 1
+DOSBlockingPeriod 1800
+DOSEmailNotify admin@domain.com
+DOSLogdir /var/log/httpd_DoS
+DOSWhitelist 127.0.0.1
+DOSWhitelist 1.1.1.1 
+DOSWhitelist 1.2.3.4 
+&lt;/IfModule&gt;
+</code></pre>
+
+<h4>參數說明</h4>
+
+<p><strong>DOSmailNotify</strong>   發現疑似攻擊時，要寄發通知的信箱<br/>
+<strong>DOSLogdir</strong>       設定LOG存放路徑<br/>
+<strong>DOSWhitelist</strong>    設定進行不阻擋的白名單IP</p>
+
+<h3>4. 重啟Apache服務</h3>
+
+<pre><code>/etc/init.d/httpd restart 
+</code></pre>
+
+<h3>5. 測試 mod_evasive 是否正常運作</h3>
+
+<p>mod_evasive 提供了測試程式 test.pl，可執行下列指令<br/>
+用以測試該模組是否有正常運作</p>
+
+<pre><code>perl test.pl
+</code></pre>
+
+<p>如果設定正常，執行 perl.pl 後會回傳 403 forbiden 等相關的訊息</p>
+
+<h5>相關連結</h5>
+
+<p><a href="http://www.openfoundry.org/tw/tech-column/8180--modevasive-dos-">以 mod_evasive 阻擋 D.o.S 攻擊</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Samba4 alpha13 實作筆記]]></title>
